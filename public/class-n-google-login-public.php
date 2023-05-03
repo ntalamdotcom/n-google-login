@@ -20,7 +20,8 @@
  * @subpackage N_Google_Login/public
  * @author     Nallib Tala <me@ntalam.com>
  */
-class N_Google_Login_Public {
+class N_Google_Login_Public
+{
 
 	/**
 	 * The ID of this plugin.
@@ -47,19 +48,26 @@ class N_Google_Login_Public {
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct($plugin_name, $version)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
+		add_action('login_form', 'add_new_login_button');
+		function add_new_login_button()
+		{
+			include_once N_GOOGLE_LOGIN_FOLDER_PATH.'/public/button-form.php' ;
+		}
 	}
+
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -73,8 +81,7 @@ class N_Google_Login_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/n-google-login-public.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/n-google-login-public.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -82,7 +89,8 @@ class N_Google_Login_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -96,8 +104,6 @@ class N_Google_Login_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/n-google-login-public.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/n-google-login-public.js', array('jquery'), $this->version, false);
 	}
-
 }

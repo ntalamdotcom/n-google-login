@@ -26,7 +26,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
@@ -35,14 +35,15 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'N_GOOGLE_LOGIN_VERSION', '1.0.0' );
+define('N_GOOGLE_LOGIN_VERSION', '1.0.0');
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-n-google-login-activator.php
  */
-function activate_n_google_login() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-n-google-login-activator.php';
+function activate_n_google_login()
+{
+	require_once plugin_dir_path(__FILE__) . 'includes/class-n-google-login-activator.php';
 	N_Google_Login_Activator::activate();
 }
 
@@ -50,19 +51,47 @@ function activate_n_google_login() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-n-google-login-deactivator.php
  */
-function deactivate_n_google_login() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-n-google-login-deactivator.php';
+function deactivate_n_google_login()
+{
+	require_once plugin_dir_path(__FILE__) . 'includes/class-n-google-login-deactivator.php';
 	N_Google_Login_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_n_google_login' );
-register_deactivation_hook( __FILE__, 'deactivate_n_google_login' );
+register_activation_hook(__FILE__, 'activate_n_google_login');
+register_deactivation_hook(__FILE__, 'deactivate_n_google_login');
+
+add_action('rest_api_init', 'n_google_login_register_endpoint');
+function n_google_login_register_endpoint()
+{
+	register_rest_route(N_GOOGLE_LOGIN__API_NAMESPACE .
+		'/v' .
+		N_GOOGLE_LOGIN__ENDPOINT_VERSION, '/' . N_GOOGLE_LOGIN__ENDPOINT_SIGN_UP, array(
+		'methods' => 'POST',
+		'callback' => function ($data) {
+			// $_POST['awt'];
+			// $client = new Google_Client();
+			// $client->setAccessToken($jwt);
+
+			return $data['awt'];;
+		},
+		// 'permission_callback' => function () {
+		// 	return current_user_can('edit_posts');
+		// },
+		'args' => array(
+			'jwt' => array(
+				'required' => true,
+				'type' => 'string',
+				'description' => 'google jwt',
+			),
+		),
+	));
+}
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-n-google-login.php';
+require plugin_dir_path(__FILE__) . 'includes/class-n-google-login.php';
 
 /**
  * Begins execution of the plugin.
@@ -73,10 +102,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-n-google-login.php';
  *
  * @since    1.0.0
  */
-function run_n_google_login() {
+function run_n_google_login()
+{
 
 	$plugin = new N_Google_Login();
 	$plugin->run();
-
 }
 run_n_google_login();
