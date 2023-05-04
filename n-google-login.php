@@ -67,12 +67,25 @@ function n_google_login_register_endpoint()
 		'/v' .
 		N_GOOGLE_LOGIN__ENDPOINT_VERSION, '/' . N_GOOGLE_LOGIN__ENDPOINT_SIGN_UP, array(
 		'methods' => 'POST',
-		'callback' => function ($data) {
+		'callback' => function ($request) {
 			// $_POST['awt'];
-			// $client = new Google_Client();
-			// $client->setAccessToken($jwt);
 
-			return $data['awt'];;
+			$jwt = $_REQUEST['jwt'];
+			if (!isset($jwt)) {
+				wp_send_json_error('token not defined');
+			}
+			include_once N_GOOGLE_LOGIN_FOLDER_PATH . '/vendor-light/autoload.php';
+			$client = new Google_Client();
+			$client->setAccessToken($jwt);
+			$credentials_file = N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json';
+			if (!file_exists($credentials_file)) {
+				wp_send_json_error('credentials file does not exist. Check n-google-login settings');
+			}
+			$client->setAuthConfig($credentials_file);
+			wp_send_json_success($jwt);
+
+			// return $jwt;
+			// return $data['awt'];;
 		},
 		// 'permission_callback' => function () {
 		// 	return current_user_can('edit_posts');
@@ -85,6 +98,34 @@ function n_google_login_register_endpoint()
 			),
 		),
 	));
+}
+
+add_action('wp_ajax_ngl_upload_credentials', 'callback_upload_credentials_ngl');
+
+//As an WP Ajax, uploads the google credentials file as JSON
+function callback_upload_credentials_ngl()
+{
+	// wp_send_json_error($_POST);
+	// wp_die();
+	// Check if user is logged in
+	if (!is_user_logged_in()) {
+		wp_send_json_error('You must be logged in to perform this action.');
+		wp_die();
+	}
+	if (empty($_FILES) || !isset($_FILES['file'])) {
+		wp_send_json_error('No file uploaded.');
+	}
+
+	// Handle the file upload
+	$file = $_FILES['file'];
+	$file_name = sanitize_file_name($file['name']);
+	$file_path = N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json';
+	$result = move_uploaded_file($file['tmp_name'], $file_path);
+	if ($result) {
+		wp_send_json_success('File uploaded successfully');
+	} else {
+		wp_send_json_error('Error uploading file.');
+	}
 }
 
 /**

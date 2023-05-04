@@ -1,6 +1,6 @@
 <?php
 // Load the Google API client library
-// include_once N_GOOGLE_LOGIN_FOLDER_PATH . '/vendor-light/autoload.php';
+// 
 
 // // Create a new Google client
 // $client = new Google_Client();
@@ -12,7 +12,7 @@
 // 	$client->setAuthConfig(N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json');
 // } catch (LogicException $e) {
 // 	echo '<p>The credentials file is not valid. Please download it again</p>';
-// 	include(N_GOOGLE_LOGIN_FOLDER_PATH . '/admin/get-credentials.php');
+// 	
 // 	die();
 // }
 // // If the user is not already authenticated, redirect them to Google to sign in
@@ -90,7 +90,8 @@ echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS;
 	}
 
 	function callbackError(error) {
-		console.log('YESSS.... error!: ', error)
+		alert('Error: ' + error)
+		console.log(error)
 	}
 
 	function handleCredentialResponse(response) {

@@ -61,35 +61,7 @@ class N_Google_Login_Admin
 				'register_admin_menu'
 			)
 		);
-		add_action('wp_ajax_upload_credentials', 'callback_upload_credentials');
-	}
-
-	//As an WP Ajax, uploads the google credentials file as JSON
-	function callback_upload_credentials()
-	{
-		// wp_send_json_error($_POST);
-		// wp_die();
-		// Check if user is logged in
-		if (!is_user_logged_in()) {
-			wp_send_json_error('You must be logged in to perform this action.');
-			wp_die();
-		}
-		if (empty($_FILES) || !isset($_FILES['file'])) {
-			wp_send_json_error('No file uploaded.');
-		}
-
-		// Handle the file upload
-		$file = $_FILES['file'];
-		$file_name = sanitize_file_name($file['name']);
-		// $file_path = WP_PLUGIN_DIR . '/ntalam-deadlines/' . $file_name;
-		$file_path = WP_PLUGIN_DIR . '/ntalam-deadlines/credentials.json';
-		// wp_send_json_success($file_path);
-		$result = move_uploaded_file($file['tmp_name'], $file_path);
-		if ($result) {
-			wp_send_json_success('File uploaded successfully: ' . $result);
-		} else {
-			wp_send_json_error('Error uploading file.');
-		}
+		
 	}
 
 	public function register_admin_menu()
@@ -107,31 +79,7 @@ class N_Google_Login_Admin
 			99
 		);
 
-		// add_submenu_page(
-		// 	$parent_slug,
-		// 	__('Endpoints', 'Endpoints'),
-		// 	__('Endpoints', 'Endpoints'),
-		// 	// __('Listing Deadlines', 'Listing Deadlines'),
-		// 	'manage_options',
-		// 	'ntalam-deadlines-endpoints',
-		// 	array($this, 'wpb_submenu_endpoints')
-		// );
-		// add_submenu_page(
-		// 	$parent_slug,
-		// 	__('Listing Deadlines', 'Listing Deadlines'),
-		// 	__('Listing Deadlines', 'Listing Deadlines'),
-		// 	'manage_options',
-		// 	'ntalam-deadlines-listing',
-		// 	array($this, 'wpb_submenu_callback')
-		// );
-		// add_submenu_page(
-		// 	$parent_slug,
-		// 	__('Deadlines Settings', 'Deadlines Settings'),
-		// 	__('Deadlines Settings', 'Deadlines Settings'),
-		// 	'manage_options',
-		// 	'ntalam-deadlines-settings',
-		// 	array($this, 'wpb_submenu_settings')
-		// );
+		
 	}
 
 	public function admin_page()
