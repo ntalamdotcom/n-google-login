@@ -78,8 +78,26 @@ function n_google_login_register_endpoint()
 				// Get $id_token via HTTPS POST.
 				$CLIENT_ID = '759326901074-a9vtip61r1c9f0d7kimo72mj560pgrua.apps.googleusercontent.com';
 				$client = new Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
+
+				$token_validation_url = sprintf(
+					'https://oauth2.googleapis.com/tokeninfo?id_token=%s',
+					$jwt // Replace $code with the sign-in code obtained from the client side
+				);
+
+				// Send a GET request to the token validation URL to get the token information
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $token_validation_url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$token_info_json = curl_exec($ch);
+				curl_close($ch);
+
+				// Parse the token information from the JSON response
+				$payload = json_decode($token_info_json, true);
+				// wp_send_json_success($token_info);
+
 				// $payload = $client->verifyIdToken($jwt);
-				$payload = $client->verifyIdToken($jwt, $CLIENT_ID, ['leeway' => 600]);
+				// $payload = $client->verifyIdToken($jwt, false);
+				// $payload = $client->verifyIdToken($jwt, false, ['leeway' => 600]);
 				if ($payload) {
 					$sub = $payload['sub'];
 					$email = $payload['email'];
@@ -92,22 +110,30 @@ function n_google_login_register_endpoint()
 					$jti = $payload['jti'];
 					$name = $payload['name'];
 					$nbf = $payload['nbf'];
+					$alg = $payload['alg'];
+					$aud = $payload['aud'];
 					$picture = $payload['picture'];
-					// $sub = $payload['sub'];
-					$username = 'newuser';
-					$password = 'password123';
-					if(email_exists($email)){
+					$azp = $payload['azp'];
+					$exp = $payload['exp'];
+					$kid = $payload['kid'];
+					$typ = $payload['typ'];
 
-						wp_send_json_success('User exists');
-					}else{
-						wp_send_json_success('User doesnt exists');
+					$username = $name;
+					$password = 'password123';
+					if (email_exists($email)) {
+						$user = get_user_by('email', $email);
+						wp_send_json_success($user);
+					// } else {
+					// 	wp_send_json_success('User doesnt exists');
 					}
 					// Create the user
 					$user_id = wp_create_user($username, $password, $email);
 
 					// Check if the user was created successfully
 					if (!is_wp_error($user_id)) {
-						wp_send_json_success('User created successfully. ID: ' . $user_id);
+						$url = $reset_link = wp_lostpassword_url() . '?user_email=' . urlencode($email);
+						wp_send_json_success('User created successfully. ID: ' . $url);
+						// wp_send_json_success('User created successfully. ID: ' . $user_id);
 						// wp_send_json_success($payload);
 						// echo ;
 					} else {
@@ -124,8 +150,8 @@ function n_google_login_register_endpoint()
 
 				wp_send_json_success($response);
 				// wp_send_json_success($user_info->names[0]->givenName);
-			} catch (BeforeValidException $e) {
-				wp_send_json_error('Sync token error. Contact Admin');
+			} catch (Firebase\JWT\BeforeValidException $e) {
+				wp_send_json_error('Sync token error. Contact Admin: ' . $e->getMessage());
 			} catch (\Throwable $th) {
 				throw $th;
 				wp_send_json_error('credentials file does not exist. Check n-google-login settings');

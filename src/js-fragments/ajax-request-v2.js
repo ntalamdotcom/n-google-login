@@ -20,7 +20,7 @@ function ajaxRequestV2(data, callback, callbackError) {
         } else {
             const response = JSON.parse(xhr.responseText);
             console.log('Error: ' + xhr.statusText);
-            console.log('response error: ',response);
+            console.log('response error: ', response);
             callbackError(response.responseText);
         }
         // toggleActiveAllInputs(false)
@@ -47,11 +47,17 @@ function ajaxRequestLogin(data, callback, callbackError, url) {
                     callback(dataResponse)
                 }
             } else {
-                console.log('not success response: ',response);
+                console.log('not success response: ', response);
                 callbackError(response.data);
             }
+        } else if (xhr.status == 500) {
+            if (xhr.statusText) {
+                callbackError(xhr.statusText);
+            } else {
+                callbackError('Internal server error. Contact admin');
+            }
         } else {
-            console.log('Error: ' + xhr.statusText);
+            console.log(xhr);
             callbackError(response.responseText);
         }
         // toggleActiveAllInputs(false)

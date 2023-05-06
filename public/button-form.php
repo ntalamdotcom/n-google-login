@@ -33,11 +33,11 @@
 // date_default_timezone_set();
 // date_default_timezone_set('Etc/GMT' . '0');
 // $t=time();
-// echo($t . "<br>");
+echo ($t . "<br>");
 
-// echo(date("Y-m-d h:m",$t). "<br>");
+echo (date("Y-m-d h:m", $t) . "<br>");
 // echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS. "<br>";
-// echo date_default_timezone_get(). "<br>";
+echo date_default_timezone_get() . "<br>";
 ?>
 <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
@@ -93,14 +93,15 @@
 	<?php include_once(N_GOOGLE_LOGIN_FOLDER_PATH . '/src/js-fragments/ajax-request-v2.js') ?>
 
 	function uploadAction(data) {
-		alert("success: "+ data)
+		alert("success: " + data)
 		console.log('YESSS.... upload!: ', data);
-		google.accounts.id.prompt(); 
+		google.accounts.id.prompt();
 	}
 
 	function callbackError(error) {
 		alert('Error: ' + error)
 		console.log(error)
+		google.accounts.id.prompt();
 	}
 
 	function handleCredentialResponse(response) {
@@ -108,6 +109,8 @@
 		var jwt = response.credential;
 		const data = new FormData();
 		data.append('jwt', jwt);
+		// var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+		// data.append('timezone', timezone);
 		var url = '<?php echo (N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS . '/' . N_GOOGLE_LOGIN__ENDPOINT_SIGN_UP); ?>'
 		console.log("url out: ", url);
 		ajaxRequestLogin(data, uploadAction, callbackError, url)
@@ -115,9 +118,13 @@
 
 	const client_id = "759326901074-a9vtip61r1c9f0d7kimo72mj560pgrua.apps.googleusercontent.com";
 	window.onload = function() {
+		var serverTime = '<?php echo date('c'); ?>';
 		google.accounts.id.initialize({
 			client_id,
-			callback: handleCredentialResponse
+			access_type: 'offline',
+			timeZone: '<?php echo date_default_timezone_get(); ?>',
+			callback: handleCredentialResponse,
+			serverTime: serverTime
 		});
 		google.accounts.id.renderButton(
 			document.getElementById("buttonDiv"), {
