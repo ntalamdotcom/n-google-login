@@ -71,18 +71,67 @@ function n_google_login_register_endpoint()
 			// $_POST['awt'];
 
 			$jwt = $_REQUEST['jwt'];
-			if (!isset($jwt)) {
-				wp_send_json_error('token not defined');
-			}
-			include_once N_GOOGLE_LOGIN_FOLDER_PATH . '/vendor-light/autoload.php';
-			$client = new Google_Client();
-			$client->setAccessToken($jwt);
-			$credentials_file = N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json';
-			if (!file_exists($credentials_file)) {
+
+			try {
+				include_once N_GOOGLE_LOGIN_FOLDER_PATH . '/vendor-light/autoload.php';
+
+				// Get $id_token via HTTPS POST.
+				$CLIENT_ID = '759326901074-a9vtip61r1c9f0d7kimo72mj560pgrua.apps.googleusercontent.com';
+				$client = new Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
+				// $payload = $client->verifyIdToken($jwt);
+				$payload = $client->verifyIdToken($jwt, $CLIENT_ID, ['leeway' => 600]);
+				if ($payload) {
+					$sub = $payload['sub'];
+					$email = $payload['email'];
+					$email_verified = $payload['email_verified'];
+					$family_name = $payload['family_name'];
+					$given_name = $payload['given_name'];
+					$hd = $payload['hd'];
+					$iat = $payload['iat'];
+					$iss = $payload['iss'];
+					$jti = $payload['jti'];
+					$name = $payload['name'];
+					$nbf = $payload['nbf'];
+					$picture = $payload['picture'];
+					// $sub = $payload['sub'];
+					$username = 'newuser';
+					$password = 'password123';
+					if(email_exists($email)){
+
+						wp_send_json_success('User exists');
+					}else{
+						wp_send_json_success('User doesnt exists');
+					}
+					// Create the user
+					$user_id = wp_create_user($username, $password, $email);
+
+					// Check if the user was created successfully
+					if (!is_wp_error($user_id)) {
+						wp_send_json_success('User created successfully. ID: ' . $user_id);
+						// wp_send_json_success($payload);
+						// echo ;
+					} else {
+						echo 'Error creating user: ' . $user_id->get_error_message();
+					}
+
+					// If request specified a G Suite domain:
+					//$domain = $payload['hd'];
+				} else {
+					// Invalid ID token
+					wp_send_json_error($payload);
+				}
+
+
+				wp_send_json_success($response);
+				// wp_send_json_success($user_info->names[0]->givenName);
+			} catch (BeforeValidException $e) {
+				wp_send_json_error('Sync token error. Contact Admin');
+			} catch (\Throwable $th) {
+				throw $th;
 				wp_send_json_error('credentials file does not exist. Check n-google-login settings');
 			}
-			$client->setAuthConfig($credentials_file);
-			wp_send_json_success($jwt);
+
+
 
 			// return $jwt;
 			// return $data['awt'];;

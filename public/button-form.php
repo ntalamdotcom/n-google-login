@@ -30,7 +30,14 @@
 // $user_info = $service->userinfo->get();
 // // $email = $user_info->getEmail();
 // include_once()
-echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS;
+// date_default_timezone_set();
+// date_default_timezone_set('Etc/GMT' . '0');
+// $t=time();
+// echo($t . "<br>");
+
+// echo(date("Y-m-d h:m",$t). "<br>");
+// echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS. "<br>";
+// echo date_default_timezone_get(). "<br>";
 ?>
 <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
@@ -86,7 +93,9 @@ echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS;
 	<?php include_once(N_GOOGLE_LOGIN_FOLDER_PATH . '/src/js-fragments/ajax-request-v2.js') ?>
 
 	function uploadAction(data) {
+		alert("success: "+ data)
 		console.log('YESSS.... upload!: ', data);
+		google.accounts.id.prompt(); 
 	}
 
 	function callbackError(error) {
@@ -95,7 +104,7 @@ echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS;
 	}
 
 	function handleCredentialResponse(response) {
-		console.log("Encoded JWT ID token: " + response.credential);
+		console.log("Encoded JWT ID token: ", response);
 		var jwt = response.credential;
 		const data = new FormData();
 		data.append('jwt', jwt);
@@ -103,9 +112,11 @@ echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS;
 		console.log("url out: ", url);
 		ajaxRequestLogin(data, uploadAction, callbackError, url)
 	}
+
+	const client_id = "759326901074-a9vtip61r1c9f0d7kimo72mj560pgrua.apps.googleusercontent.com";
 	window.onload = function() {
 		google.accounts.id.initialize({
-			client_id: "759326901074-a9vtip61r1c9f0d7kimo72mj560pgrua.apps.googleusercontent.com",
+			client_id,
 			callback: handleCredentialResponse
 		});
 		google.accounts.id.renderButton(
@@ -114,6 +125,8 @@ echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS;
 				size: "large"
 			} // customization attributes
 		);
+
+
 		google.accounts.id.prompt(); // also display the One Tap dialog
 	}
 </script>

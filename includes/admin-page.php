@@ -5,7 +5,7 @@ include_once(WP_PLUGIN_DIR . '/n-google-login/constants.php');
 $credentials_file = N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json';
 if (!file_exists($credentials_file)) {
     include_once(N_GOOGLE_LOGIN_FOLDER_PATH . '/admin/get-credentials.php');
-}else{
+} else {
     echo "Credentials file found. All good";
 }
 
@@ -15,13 +15,9 @@ if (!file_exists($credentials_file)) {
 
 </script>
 
-<div id="asdf">
-    sdfg
-</div>
-<script>
-    window.onload = function() {
-        if (typeof $ === 'function') {
 
-        }
+<script>
+    if (typeof $ === 'function') {
+
     }
 </script>
