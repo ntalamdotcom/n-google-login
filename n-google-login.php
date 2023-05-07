@@ -119,12 +119,14 @@ function n_google_login_register_endpoint()
 					$typ = $payload['typ'];
 
 					$username = $name;
-					$password = 'password123';
+					// $password = 'Password123.';
+					$password = wp_generate_password( 12, true );
+					// wp_send_json_success($password);
 					if (email_exists($email)) {
 						$user = get_user_by('email', $email);
 						wp_send_json_success($user);
-					// } else {
-					// 	wp_send_json_success('User doesnt exists');
+						// } else {
+						// 	wp_send_json_success('User doesnt exists');
 					}
 					// Create the user
 					$user_id = wp_create_user($username, $password, $email);
@@ -171,6 +173,32 @@ function n_google_login_register_endpoint()
 				'type' => 'string',
 				'description' => 'google jwt',
 			),
+		),
+	));
+	register_rest_route(N_GOOGLE_LOGIN__API_NAMESPACE .
+		'/v' .
+		N_GOOGLE_LOGIN__ENDPOINT_VERSION, '/' . N_GOOGLE_LOGIN__ENDPOINT_REDIRECT_SIGN_UP, array(
+		'methods' => 'POST',
+		'callback' => function ($request) {
+			try {
+				include_once N_GOOGLE_LOGIN_FOLDER_PATH . '/vendor-light/autoload.php';
+
+				wp_send_json_success("$response");
+				// wp_send_json_success($user_info->names[0]->givenName);
+			} catch (Firebase\JWT\BeforeValidException $e) {
+				wp_send_json_error('Sync token error. Contact Admin: ' . $e->getMessage());
+			} catch (\Throwable $th) {
+				throw $th;
+				wp_send_json_error('credentials file does not exist. Check n-google-login settings');
+			}
+		},
+
+		'args' => array(
+			// 'jwt' => array(
+			// 	'required' => true,
+			// 	'type' => 'string',
+			// 	'description' => 'google jwt',
+			// ),
 		),
 	));
 }

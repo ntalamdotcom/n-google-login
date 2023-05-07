@@ -32,7 +32,7 @@
 // include_once()
 // date_default_timezone_set();
 // date_default_timezone_set('Etc/GMT' . '0');
-// $t=time();
+$t = time();
 echo ($t . "<br>");
 
 echo (date("Y-m-d h:m", $t) . "<br>");
@@ -104,6 +104,10 @@ echo date_default_timezone_get() . "<br>";
 		google.accounts.id.prompt();
 	}
 
+	// function handleCredentialResponse2(response) {
+	// 	const url = '<?php echo (N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS . '/' . N_GOOGLE_LOGIN__ENDPOINT_REDIRECT_SIGN_UP); ?>'
+	// 	window.location.href = url;
+	// }
 	function handleCredentialResponse(response) {
 		console.log("Encoded JWT ID token: ", response);
 		var jwt = response.credential;
@@ -121,10 +125,15 @@ echo date_default_timezone_get() . "<br>";
 		var serverTime = '<?php echo date('c'); ?>';
 		google.accounts.id.initialize({
 			client_id,
-			access_type: 'offline',
-			timeZone: '<?php echo date_default_timezone_get(); ?>',
+			// access_type: 'offline',
+			// timeZone: '<?php echo date_default_timezone_get(); ?>',
 			callback: handleCredentialResponse,
-			serverTime: serverTime
+			// callback: handleCredentialResponse2,
+			// serverTime: serverTime
+			// auto_select: true, it is super annoying
+			ux_mode: 'redirect',
+			redirect_uri: 'https://www.example.com/auth/callback',
+			prompt_parent_id: 'prompt-div'
 		});
 		google.accounts.id.renderButton(
 			document.getElementById("buttonDiv"), {
