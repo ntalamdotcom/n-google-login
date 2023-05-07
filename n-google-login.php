@@ -75,10 +75,6 @@ function n_google_login_register_endpoint()
 			try {
 				include_once N_GOOGLE_LOGIN_FOLDER_PATH . '/vendor-light/autoload.php';
 
-				// Get $id_token via HTTPS POST.
-				$CLIENT_ID = '759326901074-a9vtip61r1c9f0d7kimo72mj560pgrua.apps.googleusercontent.com';
-				$client = new Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
-
 				$token_validation_url = sprintf(
 					'https://oauth2.googleapis.com/tokeninfo?id_token=%s',
 					$jwt // Replace $code with the sign-in code obtained from the client side
@@ -93,11 +89,7 @@ function n_google_login_register_endpoint()
 
 				// Parse the token information from the JSON response
 				$payload = json_decode($token_info_json, true);
-				// wp_send_json_success($token_info);
 
-				// $payload = $client->verifyIdToken($jwt);
-				// $payload = $client->verifyIdToken($jwt, false);
-				// $payload = $client->verifyIdToken($jwt, false, ['leeway' => 600]);
 				if ($payload) {
 					$sub = $payload['sub'];
 					$email = $payload['email'];
@@ -120,7 +112,7 @@ function n_google_login_register_endpoint()
 
 					$username = $name;
 					// $password = 'Password123.';
-					$password = wp_generate_password( 12, true );
+					$password = wp_generate_password(12, true);
 					// wp_send_json_success($password);
 					if (email_exists($email)) {
 						$user = get_user_by('email', $email);
@@ -178,12 +170,108 @@ function n_google_login_register_endpoint()
 	register_rest_route(N_GOOGLE_LOGIN__API_NAMESPACE .
 		'/v' .
 		N_GOOGLE_LOGIN__ENDPOINT_VERSION, '/' . N_GOOGLE_LOGIN__ENDPOINT_REDIRECT_SIGN_UP, array(
-		'methods' => 'POST',
+		'methods' => 'GET',
 		'callback' => function ($request) {
 			try {
 				include_once N_GOOGLE_LOGIN_FOLDER_PATH . '/vendor-light/autoload.php';
+				$code = $_REQUEST['code'];
 
-				wp_send_json_success("$response");
+				if (isset($code)) {
+					// wp_send_json_success("the code is " . $code);
+
+					$token_validation_url = sprintf(
+						'https://oauth2.googleapis.com/tokeninfo?id_token=%s',
+						$code // Replace $code with the sign-in code obtained from the client side
+					);
+
+					// Send a GET request to the token validation URL to get the token information
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $token_validation_url);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$token_info_json = curl_exec($ch);
+					curl_close($ch);
+
+					// Parse the token information from the JSON response
+					$payload = json_decode($token_info_json, true);
+
+					if ($payload) {
+						$sub = $payload['sub'];
+						$email = $payload['email'];
+						$email_verified = $payload['email_verified'];
+						$family_name = $payload['family_name'];
+						$given_name = $payload['given_name'];
+						$hd = $payload['hd'];
+						$iat = $payload['iat'];
+						$iss = $payload['iss'];
+						$jti = $payload['jti'];
+						$name = $payload['name'];
+						$nbf = $payload['nbf'];
+						$alg = $payload['alg'];
+						$aud = $payload['aud'];
+						$picture = $payload['picture'];
+						$azp = $payload['azp'];
+						$exp = $payload['exp'];
+						$kid = $payload['kid'];
+						$typ = $payload['typ'];
+
+						$username = $name;
+						// $password = 'Password123.';
+						$password = wp_generate_password(12, true);
+						// wp_send_json_success($payload);
+						if (email_exists($email)) {
+							$user = get_user_by('email', $email);
+							// $password = base64_decode($user->user_pass);
+
+							// $password = $user->user_pass;
+							$username = $user->user_login;
+							// wp_send_json_success($user);
+							// wp_send_json_success($username . "--------" . $password);
+							// wp_send_json_success($username . "--------" . $user->user_pass);
+						} else {
+							$user_id = wp_create_user($username, $password, $email);
+
+							// Check if the user was created successfully
+							if (!is_wp_error($user_id)) {
+								$url = wp_lostpassword_url() . '?user_email=' . urlencode($email);
+								// wp_send_json_success('User created successfully. ID: ' . $url);
+							} else {
+								$msg = 'Error creating user: ' . $user_id->get_error_message();
+								wp_send_json_error($msg);
+							}
+							$user = get_user_by( 'id', $user_id );
+						}
+						// wp_send_json_success($username . "--------" . $password);
+						// $user = wp_authenticate($username, $password);
+
+						// // Check if the user object is not a WP_Error instance
+						$error = is_wp_error($user);
+						if (!$error) {
+							// Log in the user
+							wp_set_current_user($user->ID);
+							wp_set_auth_cookie($user->ID);
+							do_action('wp_login', $user->user_login);
+
+							// Redirect the user to the appropriate page
+							wp_redirect(home_url());
+							exit;
+						} else {
+							echo "there was an error creating the user:Redirecting in 5 seconds...<br>";
+							$error_messages = $user->get_error_messages();
+							echo var_dump($error_messages) . '<br>';
+							// Wait for 5 seconds before redirecting
+							header("Refresh: 5; URL=" . wp_login_url());
+						}
+					} else {
+						// Invalid ID token
+						wp_send_json_error($payload);
+					}
+
+
+					// wp_send_json_success($response);
+				} else {
+					wp_send_json_error("the code is null");
+				}
+
 				// wp_send_json_success($user_info->names[0]->givenName);
 			} catch (Firebase\JWT\BeforeValidException $e) {
 				wp_send_json_error('Sync token error. Contact Admin: ' . $e->getMessage());
