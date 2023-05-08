@@ -9,7 +9,16 @@
 
 $redirectAddress = N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS . '/' . N_GOOGLE_LOGIN__ENDPOINT_REDIRECT_SIGN_UP;
 
-// echo $redirectAddress . "<br>";
+$credentials_file = N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json';
+if (!file_exists($credentials_file)) {
+	echo __('Credentials file does not exist. Google Login unavailable', 'n-google-login') . '<br>';
+} else {
+	$json_data = file_get_contents($credentials_file);
+
+	// Decode the JSON data into a PHP object
+	$data = json_decode($json_data);
+	$clientId = $data->web->client_id;
+}
 ?>
 <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
@@ -64,18 +73,6 @@ $redirectAddress = N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS . '/' . N_GOOGLE_LOGIN_
 <script>
 	<?php include_once(N_GOOGLE_LOGIN_FOLDER_PATH . '/src/js-fragments/ajax-request-v2.js') ?>
 
-	function uploadAction(data) {
-		alert("success: " + data)
-		console.log('YESSS.... upload!: ', data);
-		google.accounts.id.prompt();
-	}
-
-	function callbackError(error) {
-		alert('Error: ' + error)
-		console.log(error)
-		google.accounts.id.prompt();
-	}
-
 	function handleCredentialResponse2(response) {
 		var code = response.credential;
 		if (code) {
@@ -83,36 +80,24 @@ $redirectAddress = N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS . '/' . N_GOOGLE_LOGIN_
 			console.log('url: ', url)
 			window.location.href = url;
 		} else {
-			console.log('error callback')
+			console.log(<?php echo __('error callback', 'n-google-login') ?>)
 		}
 
 	}
 
-	// function handleCredentialResponse(response) {
-	// 	console.log("Encoded JWT ID token: ", response);
-	// 	var jwt = response.credential;
-	// 	const data = new FormData();
-	// 	data.append('jwt', jwt);
-	// 	// var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	// 	// data.append('timezone', timezone);
-	// 	var url = '<?php echo (N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS . '/' . N_GOOGLE_LOGIN__ENDPOINT_SIGN_UP); ?>'
-	// 	console.log("url out: ", url);
-	// 	ajaxRequestLogin(data, uploadAction, callbackError, url)
-	// }
-
-	const client_id = "759326901074-a9vtip61r1c9f0d7kimo72mj560pgrua.apps.googleusercontent.com";
+	const client_id = "<?php echo $clientId; ?>";
 	window.onload = function() {
 		var serverTime = '<?php echo date('c'); ?>';
 		google.accounts.id.initialize({
 			client_id,
 			// access_type: 'offline',
-			// timeZone: '<?php echo date_default_timezone_get(); ?>',
+			// timeZone: '<php echo date_default_timezone_get(); ?>',
 			// callback: handleCredentialResponse,
 			callback: handleCredentialResponse2,
 			// serverTime: serverTime
 			// auto_select: true, it is super annoying
 			// ux_mode: 'redirect',
-			// redirect_uri: '<?php echo $redirectAddress; ?>',
+			// redirect_uri: '<php echo $redirectAddress; ?>',
 			// prompt_parent_id: 'prompt-div'
 		});
 		google.accounts.id.renderButton(

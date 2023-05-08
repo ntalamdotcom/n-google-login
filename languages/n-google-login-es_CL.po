@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
+# NALLIB TALA ME@NTALAM.COM, YEAR.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: N Google Login\n"
 "POT-Creation-Date: 2023-05-08 03:06+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: NALLIB TALA <ME@NTALAM.COM>\n"
-"Language-Team: ENGLISH <LL@li.org>\n"
+"PO-Revision-Date: 2023-05-08 03:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: Spanish (Chile)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"Language: \n"
-"X-Generator: Loco https://localise.biz/"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Language: es_CL\n"
+"X-Generator: Loco https://localise.biz/\n"
+"Report-Msgid-Bugs-To: \n"
+"X-Loco-Version: 2.6.4; wp-6.2"
 
 #. Description of the plugin
 msgid "a plugin for loging and register a user in using your Google Accounts"
@@ -86,7 +87,7 @@ msgstr ""
 # This error occurs if the google code (after clicking sign in button client side) has expired or the server has a different time when validating a code
 #: n-google-login.php:172
 msgid "Sync token error. Contact Admin:"
-msgstr ""
+msgstr "Error de sincronizacion. Contacte al administrador:"
 
 #: n-google-login.php:167
 msgid "the code is null:"

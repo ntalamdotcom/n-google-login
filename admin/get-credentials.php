@@ -9,10 +9,10 @@
 
 </script>
 <div>
-    <p>This plugin works with Google Credentials (a file to be put in your installation) More info about Authentication <a href="https://cloud.google.com/docs/authentication" target="new">Here</a></p>
-    <p>Credentials file were not found</p>
-    <p>In order to use Google Services, we need to register this page and associate it to your Google Account.</p>
-    <p>You need to register a project (page) and get credentials.</p>
+    <p><?php echo __('This plugin works with Google Credentials (a file to be put in your installation) More info about Authentication', 'n-google-login') ?> <a href="https://cloud.google.com/docs/authentication" target="new"><?php echo __('Here', 'n-google-login') ?></a></p>
+    <p><?php echo __('Credentials file were not found', 'n-google-login') ?></p>
+    <p><?php echo __('In order to use Google Services, we need to register this page and associate it to your Google Account.', 'n-google-login') ?></p>
+    <p><?php echo __('You need to register a project (page) and get credentials.', 'n-google-login') ?></p>
     <ol>
         <li>Go to the Google API Console and select your project. More info about how to create a project <a href="https://cloud.google.com/resource-manager/docs/creating-managing-projects" target="new">Here</a></li>
         <li>go here <a href="https://console.cloud.google.com/apis/credentials" target="new">https://console.cloud.google.com/apis/credentials</a></li>
@@ -47,7 +47,7 @@
 
         }
 
-        
+
         function enableButtonUploader() {
             uploadButton.addEventListener('click', function() {
                 console.log('pressed');

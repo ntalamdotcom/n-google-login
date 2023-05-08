@@ -6,7 +6,7 @@ $credentials_file = N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json';
 if (!file_exists($credentials_file)) {
     include_once(N_GOOGLE_LOGIN_FOLDER_PATH . '/admin/get-credentials.php');
 } else {
-    echo "Credentials file found. All good";
+    echo __('Credentials file found. All good', 'n-google-login');
 }
 
 ?>
