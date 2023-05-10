@@ -1,0 +1,120 @@
+{
+  "id": "a1024ca4-4d35-46d2-a0bb-1df569c6beab",
+  "version": "2.0",
+  "name": "n google login",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "a54cbe2e-3ec3-4a8d-b99e-8ad6cae8d3dd",
+    "name": "successful testing",
+    "commands": [{
+      "id": "db73e745-6d4b-4dd1-8be8-bb366c1756e4",
+      "comment": "",
+      "command": "open",
+      "target": "/wp/wp-login.php",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0b608396-afbd-4d82-ae65-3ee0d0613f12",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1920x1052",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c3963225-d67a-4202-bfa5-282f199cfdb3",
+      "comment": "",
+      "command": "type",
+      "target": "id=user_login",
+      "targets": [
+        ["id=user_login", "id"],
+        ["name=log", "name"],
+        ["css=#user_login", "css:finder"],
+        ["xpath=//input[@id='user_login']", "xpath:attributes"],
+        ["xpath=//form[@id='loginform']/p/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "me@ntalam.com"
+    }, {
+      "id": "ac9eb41e-03ae-408a-8785-229ace2ab1b7",
+      "comment": "",
+      "command": "type",
+      "target": "id=user_pass",
+      "targets": [
+        ["id=user_pass", "id"],
+        ["name=pwd", "name"],
+        ["css=#user_pass", "css:finder"],
+        ["xpath=//input[@id='user_pass']", "xpath:attributes"],
+        ["xpath=//form[@id='loginform']/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d23adcfa-5d4e-4de2-a501-85800149b7c4",
+      "comment": "",
+      "command": "selectFrame",
+      "target": "index=1",
+      "targets": [
+        ["index=1"]
+      ],
+      "value": ""
+    }, {
+      "id": "6cbb4821-5c50-4527-ad48-de221fecd919",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fFW7wc-ibnC6b-sM5MNb:nth-child(1) .fFW7wc-ibnC6b-K4efff",
+      "targets": [
+        ["css=.fFW7wc-ibnC6b-sM5MNb:nth-child(1) .fFW7wc-ibnC6b-K4efff", "css:finder"],
+        ["xpath=//div[@id='credentials-picker']/div/div/div[3]/div[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div/div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fee27357-4423-4151-8445-91e9ff50aa9a",
+      "comment": "",
+      "command": "selectFrame",
+      "target": "relative=parent",
+      "targets": [
+        ["relative=parent"]
+      ],
+      "value": ""
+    }, {
+      "id": "8704c08d-0a8a-45ba-8b7a-46431f1b07cf",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=G'day, ntalam",
+      "targets": [
+        ["linkText=G'day, ntalam", "linkText"],
+        ["css=#wp-admin-bar-my-account > .ab-item", "css:finder"],
+        ["xpath=//li[@id='wp-admin-bar-my-account']/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://localhost/wp/wp-admin/profile.php']", "xpath:href"],
+        ["xpath=//div[3]/div/ul[2]/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3fde1060-ab0f-4b1a-8cd5-9c3b316ea998",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Log Out",
+      "targets": [
+        ["linkText=Log Out", "linkText"],
+        ["css=#wp-admin-bar-logout > .ab-item", "css:finder"],
+        ["xpath=//a[contains(text(),'Log Out')]", "xpath:link"],
+        ["xpath=//li[@id='wp-admin-bar-logout']/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://localhost/wp/wp-login.php?action=logout&_wpnonce=cebd13a016']", "xpath:href"],
+        ["xpath=//li[2]/div/ul/li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Log Out')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "8e048568-7017-49d7-8b67-e1bf95e29dab",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["a54cbe2e-3ec3-4a8d-b99e-8ad6cae8d3dd"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

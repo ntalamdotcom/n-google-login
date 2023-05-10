@@ -27,7 +27,8 @@
  * @subpackage N_Google_Login/includes
  * @author     Nallib Tala <me@ntalam.com>
  */
-class N_Google_Login {
+class N_Google_Login
+{
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -66,8 +67,10 @@ class N_Google_Login {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
-		if ( defined( 'N_GOOGLE_LOGIN_VERSION' ) ) {
+	public function __construct()
+	{
+
+		if (defined('N_GOOGLE_LOGIN_VERSION')) {
 			$this->version = N_GOOGLE_LOGIN_VERSION;
 		} else {
 			$this->version = '1.0.0';
@@ -78,7 +81,6 @@ class N_Google_Login {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -97,33 +99,33 @@ class N_Google_Login {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function load_dependencies()
+	{
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-n-google-login-loader.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-n-google-login-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-n-google-login-i18n.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-n-google-login-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-n-google-login-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-n-google-login-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-n-google-login-public.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-n-google-login-public.php';
 
 		$this->loader = new N_Google_Login_Loader();
-
 	}
 
 	/**
@@ -135,12 +137,16 @@ class N_Google_Login {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function set_locale() {
+	private function set_locale()
+	{
 
 		$plugin_i18n = new N_Google_Login_i18n();
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
+		$this->loader->add_action(
+			'plugins_loaded',
+			$plugin_i18n,
+			'load_plugin_textdomain'
+		);
 	}
 
 	/**
@@ -150,13 +156,13 @@ class N_Google_Login {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks()
+	{
 
-		$plugin_admin = new N_Google_Login_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new N_Google_Login_Admin($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 	}
 
 	/**
@@ -166,13 +172,13 @@ class N_Google_Login {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks()
+	{
 
-		$plugin_public = new N_Google_Login_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new N_Google_Login_Public($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 	}
 
 	/**
@@ -180,7 +186,8 @@ class N_Google_Login {
 	 *
 	 * @since    1.0.0
 	 */
-	public function run() {
+	public function run()
+	{
 		$this->loader->run();
 	}
 
@@ -191,7 +198,8 @@ class N_Google_Login {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name()
+	{
 		return $this->plugin_name;
 	}
 
@@ -201,7 +209,8 @@ class N_Google_Login {
 	 * @since     1.0.0
 	 * @return    N_Google_Login_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader() {
+	public function get_loader()
+	{
 		return $this->loader;
 	}
 
@@ -211,8 +220,8 @@ class N_Google_Login {
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version() {
+	public function get_version()
+	{
 		return $this->version;
 	}
-
 }

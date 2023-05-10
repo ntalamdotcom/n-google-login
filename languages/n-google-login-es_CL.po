@@ -5,76 +5,85 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: N Google Login\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-08 03:06+0000\n"
-"PO-Revision-Date: 2023-05-08 03:14+0000\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2023-05-10 09:20+1000\n"
+"Last-Translator: Nallib <me@ntalam.com>\n"
 "Language-Team: Spanish (Chile)\n"
+"Language: es_CL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"Language: es_CL\n"
-"X-Generator: Loco https://localise.biz/\n"
-"Report-Msgid-Bugs-To: \n"
-"X-Loco-Version: 2.6.4; wp-6.2"
+"X-Generator: Poedit 3.2.2\n"
+"X-Loco-Version: 2.6.4; wp-6.2\n"
 
 #. Description of the plugin
 msgid "a plugin for loging and register a user in using your Google Accounts"
 msgstr ""
+"un plugin para registrarse e ingresar un usuario usando tu cuenta Google"
 
 #: n-google-login.php:175
 msgid "credentials file does not exist. Check n-google-login settings"
 msgstr ""
+"el archivo de credenciales no existe. Compruebe la configuración de n-google-"
+"login"
 
 #: public/button-form.php:14
 msgid "Credentials file does not exist. Google Login unavailable"
 msgstr ""
+"El archivo de credenciales no existe. Inicio de sesión de Google no "
+"disponible"
 
 #: includes/admin-page.php:9
 msgid "Credentials file found. All good"
-msgstr ""
+msgstr "Archivo de credenciales encontrado. Todo bien"
 
 #: admin/get-credentials.php:13
 msgid "Credentials file were not found"
-msgstr ""
+msgstr "No se ha encontrado el archivo de credenciales"
 
 #: public/button-form.php:83
 msgid "error callback"
-msgstr ""
+msgstr "devolución de error"
 
 #: n-google-login.php:136
 msgid "Error creating user:"
-msgstr ""
+msgstr "Error al crear usuario:"
 
 #: n-google-login.php:211
 msgid "Error uploading file."
-msgstr ""
+msgstr "Error al cargar el archivo."
 
 #: n-google-login.php:209
 msgid "File uploaded successfully"
-msgstr ""
+msgstr "Archivo cargado correctamente"
 
 #: admin/get-credentials.php:12
 msgid "Here"
-msgstr ""
+msgstr "Aquí"
 
 #. URI of the plugin
 msgid "https://ngooglelogin.ntalam.com"
-msgstr ""
+msgstr "https://ngooglelogin.ntalam.com"
 
 #. Author URI of the plugin
 msgid "https://ntalam.com"
-msgstr ""
+msgstr "https://ntalam.com"
 
 #: admin/get-credentials.php:14
 msgid ""
 "In order to use Google Services, we need to register this page and associate "
 "it to your Google Account."
 msgstr ""
+"Para poder utilizar los Servicios de Google, necesitamos registrar esta "
+"página y asociarla a su cuenta de Google."
 
 #. Name of the plugin
 msgid "N Google Login"
 msgstr ""
+"el archivo de credenciales no existe. Compruebe la configuración de n-google-"
+"login"
 
 #. Author of the plugin
 msgid "Nallib Tala"
@@ -82,7 +91,7 @@ msgstr ""
 
 #: n-google-login.php:200
 msgid "No file uploaded"
-msgstr ""
+msgstr "No se ha cargado ningún archivo"
 
 # This error occurs if the google code (after clicking sign in button client side) has expired or the server has a different time when validating a code
 #: n-google-login.php:172
@@ -91,23 +100,26 @@ msgstr "Error de sincronizacion. Contacte al administrador:"
 
 #: n-google-login.php:167
 msgid "the code is null:"
-msgstr ""
+msgstr "el código es nulo:"
 
 # Because there was an error when creating a user. The browser redirects to the login page in 5 seconds.
 #: n-google-login.php:154
 msgid "there was an error creating the user:Redirecting in 5 seconds"
 msgstr ""
+"se ha producido un error al crear el usuario:Redireccionamiento en 5 segundos"
 
 #: admin/get-credentials.php:12
 msgid ""
 "This plugin works with Google Credentials (a file to be put in your "
 "installation) More info about Authentication"
 msgstr ""
+"Este plugin funciona con credenciales de Google (un archivo que se coloca en "
+"la instalación) Más información sobre la autenticación"
 
 #: n-google-login.php:196
 msgid "You must be logged in to perform this action."
-msgstr ""
+msgstr "Debe iniciar sesión para realizar esta acción."
 
 #: admin/get-credentials.php:15
 msgid "You need to register a project (page) and get credentials."
-msgstr ""
+msgstr "Es necesario registrar un proyecto (página) y obtener credenciales."

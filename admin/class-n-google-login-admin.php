@@ -54,6 +54,13 @@ class N_Google_Login_Admin
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		include_once(WP_PLUGIN_DIR . '/n-google-login/constants.php');
+
+		load_plugin_textdomain(
+			'n-google-login',
+			false,
+			N_GOOGLE_LOGIN_FOLDER_PATH . '/languages'
+			// dirname(plugin_basename(__FILE__)) . '/languages'
+		);
 		add_action(
 			'admin_menu',
 			array(
@@ -61,7 +68,6 @@ class N_Google_Login_Admin
 				'register_admin_menu'
 			)
 		);
-		
 	}
 
 	public function register_admin_menu()
@@ -74,12 +80,9 @@ class N_Google_Login_Admin
 			'manage_options', // Capability required to access the menu
 			$parent_slug, // Slug for the menu page
 			array($this, 'admin_page'), // Callback function that renders the menu page
-			// 'dashicons-admin-plugins',// Icon URL
 			'dashicons-google',
 			99
 		);
-
-		
 	}
 
 	public function admin_page()
@@ -137,12 +140,5 @@ class N_Google_Login_Admin
 			$this->version,
 			false
 		);
-		// wp_enqueue_script(
-		// 	'primeui-js',
-		// 	'https://cdnjs.cloudflare.com/ajax/libs/primeui/4.1.15/primeui-all.js',
-		// 	array('jquery'),
-		// 	PRIMEUI_VERSION,
-		// 	false
-		// );
 	}
 }

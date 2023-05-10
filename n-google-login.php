@@ -25,7 +25,20 @@
  * Domain Path:       /languages
  */
 
-load_plugin_textdomain( 'n-google-login', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+$http_accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+// Extract the preferred language
+$preferred_language = '';
+if (isset($http_accept_language) && strlen($http_accept_language) > 0) {
+	$languages = explode(',', $http_accept_language);
+	$preferred_language = $languages[0];
+	if ($preferred_language) {
+		setlocale(LC_ALL, $preferred_language);
+	}
+}
+
+// Output the preferred language
+// echo "Preferred language: " . $preferred_language .    '<br>';
+
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
@@ -71,11 +84,9 @@ function n_google_login_register_endpoint()
 		'methods' => 'GET',
 		'callback' => function ($request) {
 			try {
-				// include_once N_GOOGLE_LOGIN_FOLDER_PATH . '/vendor-light/autoload.php';
 				$code = $_REQUEST['code'];
-
+				$code = sanitize_text_field($code);
 				if (isset($code)) {
-					// wp_send_json_success("the code is " . $code);
 
 					$token_validation_url = sprintf(
 						'https://oauth2.googleapis.com/tokeninfo?id_token=%s',
@@ -113,27 +124,18 @@ function n_google_login_register_endpoint()
 						$typ = $payload['typ'];
 
 						$username = $name;
-						// $password = 'Password123.';
 						$password = wp_generate_password(12, true);
-						// wp_send_json_success($payload);
 						if (email_exists($email)) {
 							$user = get_user_by('email', $email);
-							// $password = base64_decode($user->user_pass);
-
-							// $password = $user->user_pass;
 							$username = $user->user_login;
-							// wp_send_json_success($user);
-							// wp_send_json_success($username . "--------" . $password);
-							// wp_send_json_success($username . "--------" . $user->user_pass);
 						} else {
 							$user_id = wp_create_user($username, $password, $email);
 
 							// Check if the user was created successfully
 							if (!is_wp_error($user_id)) {
 								$url = wp_lostpassword_url() . '?user_email=' . urlencode($email);
-								// wp_send_json_success('User created successfully. ID: ' . $url);
 							} else {
-								$msg = __('Error creating user:', 'n-google-login').' ' . $user_id->get_error_message();
+								$msg = __('Error creating user:', 'n-google-login') . ' ' . $user_id->get_error_message();
 								wp_send_json_error($msg);
 							}
 							$user = get_user_by('id', $user_id);
@@ -151,7 +153,7 @@ function n_google_login_register_endpoint()
 							wp_redirect(home_url());
 							exit;
 						} else {
-							echo __('there was an error creating the user:Redirecting in 5 seconds', 'n-google-login')."...<br>";
+							echo __('there was an error creating the user:Redirecting in 5 seconds', 'n-google-login') . "...<br>";
 							$error_messages = $user->get_error_messages();
 							echo var_dump($error_messages) . '<br>';
 							// Wait for 5 seconds before redirecting
@@ -161,15 +163,11 @@ function n_google_login_register_endpoint()
 						// Invalid ID token
 						wp_send_json_error($payload);
 					}
-
-					// wp_send_json_success($response);
 				} else {
 					wp_send_json_error(__('the code is null:', 'n-google-login'));
 				}
-
-				// wp_send_json_success($user_info->names[0]->givenName);
 			} catch (Firebase\JWT\BeforeValidException $e) {
-				wp_send_json_error(__('Sync token error. Contact Admin:', 'n-google-login').' ' . $e->getMessage());
+				wp_send_json_error(__('Sync token error. Contact Admin:', 'n-google-login') . ' ' . $e->getMessage());
 			} catch (\Throwable $th) {
 				throw $th;
 				wp_send_json_error(__('credentials file does not exist. Check n-google-login settings', 'n-google-login'));
@@ -202,7 +200,6 @@ function callback_upload_credentials_ngl()
 
 	// Handle the file upload
 	$file = $_FILES['file'];
-	// $file_name = sanitize_file_name($file['name']);
 	$file_path = N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json';
 	$result = move_uploaded_file($file['tmp_name'], $file_path);
 	if ($result) {

@@ -18,8 +18,3 @@ define('N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS', home_url() .
     '/wp-json/' . N_GOOGLE_LOGIN__API_NAMESPACE .
     '/v' .
     N_GOOGLE_LOGIN__ENDPOINT_VERSION);
-
-
-// $plugin_basename = plugin_basename(__FILE__); // Get the plugin file name relative to the plugins directory
-// $plugin_dirname = dirname($plugin_basename); // Get the directory name of the plugin file
-// $plugin_path = WP_PLUGIN_DIR . '/' . $plugin_dirname; // Get the absolute path of the plugin directory

@@ -1,12 +1,5 @@
 <?php
 
-// $t = time();
-// echo ($t . "<br>");
-
-// echo (date("Y-m-d h:m", $t) . "<br>");
-// // echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS. "<br>";
-// echo date_default_timezone_get() . "<br>";
-
 $redirectAddress = N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS . '/' . N_GOOGLE_LOGIN__ENDPOINT_REDIRECT_SIGN_UP;
 
 $credentials_file = N_GOOGLE_LOGIN_FOLDER_PATH . '/credentials.json';
@@ -20,7 +13,6 @@ if (!file_exists($credentials_file)) {
 	$clientId = $data->web->client_id;
 }
 ?>
-<!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
 <style>
 	.n-google-wrap {
@@ -80,7 +72,7 @@ if (!file_exists($credentials_file)) {
 			console.log('url: ', url)
 			window.location.href = url;
 		} else {
-			console.log(<?php echo __('error callback', 'n-google-login') ?>)
+			console.log("<?php echo __('error callback', 'n-google-login') ?>")
 		}
 
 	}
@@ -90,15 +82,7 @@ if (!file_exists($credentials_file)) {
 		var serverTime = '<?php echo date('c'); ?>';
 		google.accounts.id.initialize({
 			client_id,
-			// access_type: 'offline',
-			// timeZone: '<php echo date_default_timezone_get(); ?>',
-			// callback: handleCredentialResponse,
 			callback: handleCredentialResponse2,
-			// serverTime: serverTime
-			// auto_select: true, it is super annoying
-			// ux_mode: 'redirect',
-			// redirect_uri: '<php echo $redirectAddress; ?>',
-			// prompt_parent_id: 'prompt-div'
 		});
 		google.accounts.id.renderButton(
 			document.getElementById("buttonDiv"), {

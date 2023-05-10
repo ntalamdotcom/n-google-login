@@ -1,7 +1,5 @@
 <?php
 
-// echo N_GOOGLE_LOGIN__API_NAMESPACE_ADDRESS;
-
 ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
@@ -29,9 +27,6 @@
         <li>Click on "Create". A floating window should appear with the credentials "OAuth client created"</li>
         <li>Click on "DOWNLOAD JSON" to Download the Json file.</li>
         <li>Click the following button to Upload the JSON file into your plugin folder.</li>
-        <!-- <li></li>
-        <li></li>
-        <li></li> -->
     </ol>
 
     <div>
@@ -42,7 +37,6 @@
     <script>
         const uploadButton = document.getElementById('uploadButton');
         const buttonFileSelect = document.querySelector('input[type="file"]');
-        // const buttonFileSelect = document.getElementById('buttonFileSelect');
         function uploadAction() {
 
         }
@@ -86,7 +80,6 @@
         }
 
         function ajaxRequest(data, callback) {
-            // toggleActiveAllInputs(true)
             const xhr = new XMLHttpRequest();
             xhr.open('POST', ajaxurl);
             console.log('ajaxurl: ', ajaxurl)
@@ -105,7 +98,6 @@
                 } else {
                     console.log('Error: ' + xhr.statusText);
                 }
-                // toggleActiveAllInputs(false)
             };
             xhr.send(data);
         }
